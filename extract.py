@@ -14,9 +14,8 @@ You'll edit this file in Task 2.
 """
 import csv
 import json
-
 from models import NearEarthObject, CloseApproach
-
+from helpers import datetime_from_str
 
 def load_neos(neo_csv_path):
     """Read near-Earth object information from a CSV file.
@@ -29,7 +28,9 @@ def load_neos(neo_csv_path):
     with open(neo_csv_path, 'r') as infile:
         reader = csv.DictReader(infile)
         for line in reader:
-            neo = NearEarthObject(designation=line['pdes'], name=line['name'], diameter=float(line['diameter']), hazardous=bool(line['pha']))
+            diameter = float(line['diameter']) if line['diameter'] else None
+            hazardous = True if line['pha'] == 'Y' else False
+            neo = NearEarthObject(designation=line['pdes'], name=line['name'], diameter=diameter, hazardous=hazardous)
             neos.append(neo)
     return neos
 
@@ -44,6 +45,7 @@ def load_approaches(cad_json_path):
     with open(cad_json_path, 'r') as infile:
         data = json.load(infile)
         for line in data['data']:
-            approach = CloseApproach(designation=line[0], time=line[3], distance=float(line[4]), velocity=float(line[7]))
+            time = datetime_from_str(line[3])
+            approach = CloseApproach(designation=line[0], time=time, distance=float(line[4]), velocity=float(line[7]))
             approaches.append(approach)
     return approaches

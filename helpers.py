@@ -26,7 +26,7 @@ def cd_to_datetime(calendar_date):
     :param calendar_date: A calendar date in YYYY-bb-DD hh:mm format.
     :return: A naive `datetime` corresponding to the given calendar date and time.
     """
-    return datetime.datetime.strptime(calendar_date, "%Y-%b-%d %H:%M")
+    return datetime.datetime.strptime(calendar_date, "%Y-%m-%d %H:%M")
 
 
 def datetime_to_str(dt):
@@ -42,3 +42,15 @@ def datetime_to_str(dt):
     :return: That datetime, as a human-readable string without seconds.
     """
     return datetime.datetime.strftime(dt, "%Y-%m-%d %H:%M")
+
+
+def datetime_from_str(date_str): # Added by me
+    """Parse a date string into a datetime object.
+
+    :param date_str: A string representing a date in the format YYYY-M-D H:M:S or YYYY-MMM-D H:M.
+    :return: A `datetime` object representing the given date and time.
+    """
+    try:
+        return datetime.datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
+    except ValueError:
+        return datetime.datetime.strptime(date_str, '%Y-%b-%d %H:%M')

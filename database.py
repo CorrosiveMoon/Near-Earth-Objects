@@ -42,8 +42,20 @@ class NEODatabase:
         self._approaches = approaches
 
         # TODO: What additional auxiliary data structures will be useful?
+        self._neos_by_designation = {neo.designation: neo for neo in neos}
+        self._neos_by_name = {}
+
 
         # TODO: Link together the NEOs and their close approaches.
+        for approach in approaches:
+            designation = approach._designation
+            if designation in self._neos_by_designation:
+                neo = self._neos_by_designation[designation]
+                approach.neo = neo
+                neo.approaches.append(approach)
+            if approach.neo is not None and approach.neo.name is not None:
+                self._neos_by_name[approach.neo.name] = approach.neo
+
 
     def get_neo_by_designation(self, designation):
         """Find and return an NEO by its primary designation.
@@ -59,7 +71,7 @@ class NEODatabase:
         :return: The `NearEarthObject` with the desired primary designation, or `None`.
         """
         # TODO: Fetch an NEO by its primary designation.
-        return None
+        return self._neos_by_designation.get(designation, None)
 
     def get_neo_by_name(self, name):
         """Find and return an NEO by its name.
@@ -76,9 +88,12 @@ class NEODatabase:
         :return: The `NearEarthObject` with the desired name, or `None`.
         """
         # TODO: Fetch an NEO by its name.
-        return None
+        matching_neos = self._neos_by_name.get(name, None)
+        if matching_neos:
+            return matching_neos
+        
 
-    def query(self, filters=()):
+    def query(self, filters):
         """Query close approaches to generate those that match a collection of filters.
 
         This generates a stream of `CloseApproach` objects that match all of the
@@ -94,4 +109,5 @@ class NEODatabase:
         """
         # TODO: Generate `CloseApproach` objects that match all of the filters.
         for approach in self._approaches:
-            yield approach
+            if all(filter(approach) for filter in filters):
+                yield approach
