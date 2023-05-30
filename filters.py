@@ -72,6 +72,37 @@ class AttributeFilter:
     def __repr__(self):
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
     
+class DateFilter(AttributeFilter):
+    """A subclass of AttributeFilter that filters by date."""
+    @classmethod
+    def get(cls, approach):
+        return approach.time.date()
+
+class DistanceFilter(AttributeFilter):
+    """A subclass of AttributeFilter that filters by distance."""
+    @classmethod
+    def get(cls, approach):
+        return approach.distance
+
+class VelocityFilter(AttributeFilter):
+    """A subclass of AttributeFilter that filters by velocity."""
+    @classmethod
+    def get(cls, approach):
+        return approach.velocity
+
+class DiameterFilter(AttributeFilter):
+    """A subclass of AttributeFilter that filters by diameter."""
+    @classmethod
+    def get(cls, approach):
+        return approach.neo.diameter
+
+class HazardousFilter(AttributeFilter):
+    """A subclass of AttributeFilter that filters by hazard."""
+    @classmethod
+    def get(cls, approach):
+        return approach.neo.hazardous
+
+    
 
 
 def create_filters(date=None, start_date=None, end_date=None,
@@ -112,25 +143,25 @@ def create_filters(date=None, start_date=None, end_date=None,
 
     filters = []
     if date:
-        filters.append(AttributeFilter(operator.eq, date))
+        filters.append(DateFilter(operator.eq, date))
     if start_date:
-        filters.append(AttributeFilter(operator.ge, start_date))
+        filters.append(DateFilter(operator.ge, start_date))
     if end_date:
-        filters.append(AttributeFilter(operator.le, end_date))
+        filters.append(DateFilter(operator.le, end_date))
     if distance_min:
-        filters.append(AttributeFilter(operator.ge, distance_min))
+        filters.append(DistanceFilter(operator.ge, distance_min))
     if distance_max:
-        filters.append(AttributeFilter(operator.le, distance_max))
+        filters.append(DistanceFilter(operator.le, distance_max))
     if velocity_min:
-        filters.append(AttributeFilter(operator.ge, velocity_min))
+        filters.append(VelocityFilter(operator.ge, velocity_min))
     if velocity_max:
-        filters.append(AttributeFilter(operator.le, velocity_max))
+        filters.append(VelocityFilter(operator.le, velocity_max))
     if diameter_min:
-        filters.append(AttributeFilter(operator.ge, diameter_min))
+        filters.append(DiameterFilter(operator.ge, diameter_min))
     if diameter_max:
-        filters.append(AttributeFilter(operator.le, diameter_max))
+        filters.append(DiameterFilter(operator.le, diameter_max))
     if hazardous is not None:
-        filters.append(AttributeFilter(operator.eq, hazardous))
+        filters.append(HazardousFilter(operator.eq, hazardous))
     
     return filters
     
