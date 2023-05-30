@@ -17,19 +17,19 @@ The Near-Earth Object (NEO) Explorer is a Python script that allows you to explo
 The script can be invoked from the command line with the following subcommands: 
 ### Inspect 
 To inspect an NEO by primary designation or name, use the `inspect` subcommand:
-$ python3 main.py inspect --pdes 1P 
-$ python3 main.py inspect --name Halley 
-$ python3 main.py inspect --verbose --name Halley
+1. $ python3 main.py inspect --pdes 1P 
+2. $ python3 main.py inspect --name Halley 
+3. $ python3 main.py inspect --verbose --name Halley
 
 The `--pdes` option specifies the primary designation of the NEO, while the `--name` option specifies the IAU name of the NEO. Use the `--verbose` flag to display all known close approaches of the NEO.
 
 ### Query
 
 To search for close approaches that match specific criteria, use the `query` subcommand:
-$ python3 main.py query --date 2022-05-29 $ python3 main.py query --start-date 2023-01-01 --end-date 2023-12-31 --max-distance 0.025 
-$ python3 main.py query --start-date 2023-01-01 --min-distance 0.1 --min-velocity 50 $ python3 main.py query --date 2023-05-29 --max-velocity 25 --min-diameter 0.5 --hazardous 
-$ python3 main.py query --start-date 2023-01-01 --max-diameter 0.1 --not-hazardous 
-$ python3 main.py query --hazardous --max-distance 0.05 --min-velocity 30
+1. $ python3 main.py query --date 2022-05-29 $ python3 main.py query --start-date 2023-01-01 --end-date 2023-12-31 --max-distance 0.025 
+2. $ python3 main.py query --start-date 2023-01-01 --min-distance 0.1 --min-velocity 50 $ python3 main.py query --date 2023-05-29 --max-velocity 25 --min-diameter 0.5 --hazardous 
+3. $ python3 main.py query --start-date 2023-01-01 --max-diameter 0.1 --not-hazardous 
+4. $ python3 main.py query --hazardous --max-distance 0.05 --min-velocity 30
 
 You can specify various filters such as date, distance, velocity, diameter, and hazard status using the corresponding options. The `--limit` option can be used to restrict the number of matches returned. The results can be saved to an output file using the `--outfile` option.
 
